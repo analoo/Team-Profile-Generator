@@ -1,16 +1,103 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
+// const Manager = require("./lib/Manager");
+// const Engineer = require("./lib/Engineer");
+// const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-const path = require("path");
-const fs = require("fs");
+// const path = require("path");
+// const fs = require("fs");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+// const OUTPUT_DIR = path.resolve(__dirname, "output");
+// const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const render = require("./lib/htmlRenderer");
+// const render = require("./lib/htmlRenderer");
 
 
+const engineerQs = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is this employee's name?"
+
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is this employee's work ID?"
+
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is this employee's work email?"
+
+    },
+
+    {
+        type: "input",
+        name: "GitHub",
+        message: "What is this employee's GitHub name?"
+
+    },
+
+];
+
+const internQs = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is this intern's name?"
+
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is this intern's work ID?"
+
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is this intern's email?"
+
+    },
+
+    {
+        type: "input",
+        name: "school",
+        message: "What school does this intern go to?"
+
+    },
+
+];
+
+const managerQs = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is your name?"
+
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is your work id?"
+
+    },
+    {
+        type: "input",
+        name: "office",
+        message: "What is your office number?"
+
+    },
+    {
+        type: "list",
+        name: "add",
+        message: "What would you like to do?",
+        choices: ["Add an employee", "Add an intern", "Nothing. I'm done"]
+
+    },
+]
+
+inquirer.prompt(managerQs,engineerQs)
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
