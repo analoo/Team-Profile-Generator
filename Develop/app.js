@@ -1,6 +1,6 @@
-// const Manager = require("./lib/Manager");
-// const Engineer = require("./lib/Engineer");
-// const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 // const path = require("path");
 // const fs = require("fs");
@@ -33,7 +33,7 @@ const engineerQs = [
 
     {
         type: "input",
-        name: "GitHub",
+        name: "github",
         message: "What is this employee's GitHub name?"
 
     },
@@ -84,6 +84,12 @@ const managerQs = [
     },
     {
         type: "input",
+        name: "email",
+        message: "What is your email?"
+
+    },
+    {
+        type: "input",
         name: "office",
         message: "What is your office number?"
 
@@ -94,10 +100,43 @@ const managerQs = [
         message: "What would you like to do?",
         choices: ["Add an employee", "Add an intern", "Nothing. I'm done"]
 
-    },
+    }
+
 ]
 
-inquirer.prompt(managerQs,engineerQs)
+
+inquirer.prompt(managerQs)
+    .then(
+        function (res) {
+            var jon = new Manager(res.name,res.id,res.email,res.office)
+            console.log(jon)
+            // while (response.add != "Nothing. I'm done") {
+            //     inquirer.prompt(managerQs[3]).then(function (res) {
+                    if (res.add === "Add an employee") {
+                        inquirer.prompt(engineerQs)
+                            .then(function (res) {
+                                var tom = new Engineer(res.name, res.id, res.email, res.github)
+                                console.log(tom)
+                            })
+                    }
+                    else if (res.add === "Add an intern") {
+                        inquirer.prompt(internQs)
+                            .then(function (res) {
+                                var marc = new Intern(res.name, res.id, res.email, res.school)
+                                console.log(marc)
+                            })
+                    }
+
+            //     })
+            // }
+
+        })
+
+    // while(response.add !== "Nothing. I'm done"){
+    //     
+    //     }
+    // }
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
