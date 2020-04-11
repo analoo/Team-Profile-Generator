@@ -2,13 +2,13 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-// const path = require("path");
-// const fs = require("fs");
+const path = require("path");
+const fs = require("fs");
 
-// const OUTPUT_DIR = path.resolve(__dirname, "output");
-// const outputPath = path.join(OUTPUT_DIR, "team.html");
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-// const render = require("./lib/htmlRenderer");
+const render = require("./lib/htmlRenderer");
 
 
 const engineerQs = [
@@ -104,19 +104,18 @@ const managerQs = [
 
 ]
 
-
+const employees = []
 inquirer.prompt(managerQs)
     .then(
         function (res) {
-            var jon = new Manager(res.name,res.id,res.email,res.office)
-            console.log(jon)
+            employees.push(new Manager(res.name,res.id,res.email,res.office))
             // while (response.add != "Nothing. I'm done") {
             //     inquirer.prompt(managerQs[3]).then(function (res) {
                     if (res.add === "Add an employee") {
                         inquirer.prompt(engineerQs)
                             .then(function (res) {
-                                var tom = new Engineer(res.name, res.id, res.email, res.github)
-                                console.log(tom)
+                                employees.push(new Engineer(res.name, res.id, res.email, res.github))
+                                render(employees)
                             })
                     }
                     else if (res.add === "Add an intern") {
@@ -132,11 +131,7 @@ inquirer.prompt(managerQs)
 
         })
 
-    // while(response.add !== "Nothing. I'm done"){
-    //     
-    //     }
-    // }
-
+       
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
