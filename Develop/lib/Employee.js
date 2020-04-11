@@ -6,6 +6,23 @@ class Employee {
         this.id = id;
         this.email = email;
         this.title = title;
+        this.role = "Employee"
+    }
+
+    getName(){
+        return this.name
+    }
+
+    getId(){
+        return this.id
+    }
+
+    getEmail(){
+        return this.email
+    }
+
+    getRole(){
+        return this.role
     }
     
 }
