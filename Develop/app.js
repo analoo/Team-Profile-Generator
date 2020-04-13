@@ -10,7 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-
+// creates questions needed for each of the classes we want to create
 const engineerQs = [
     {
         type: "input",
@@ -94,44 +94,88 @@ const managerQs = [
         message: "What is your office number?"
 
     },
-    {
-        type: "list",
-        name: "add",
-        message: "What would you like to do?",
-        choices: ["Add an employee", "Add an intern", "Nothing. I'm done"]
-
-    }
 
 ]
 
+// will hold all of the employee type objects that were created
 const employees = []
-inquirer.prompt(managerQs)
-    .then(
-        function (res) {
-            employees.push(new Manager(res.name,res.id,res.email,res.office))
-            // while (response.add != "Nothing. I'm done") {
-            //     inquirer.prompt(managerQs[3]).then(function (res) {
-                    if (res.add === "Add an employee") {
-                        inquirer.prompt(engineerQs)
-                            .then(function (res) {
-                                employees.push(new Engineer(res.name, res.id, res.email, res.github))
-                                render(employees)
-                            })
-                    }
-                    else if (res.add === "Add an intern") {
-                        inquirer.prompt(internQs)
-                            .then(function (res) {
-                                var marc = new Intern(res.name, res.id, res.email, res.school)
-                                console.log(marc)
-                            })
-                    }
+// Asks manager questions about themselves before diving into 
+createManager(managerQs)
 
-            //     })
-            // }
+async function managerPrompt() {
+    try {
+        var selection = await nextStep();
+        if (selection.add === "Add an employee") {
+            createEngineer(engineerQs)
+
+        }
+        else if (selection.add === "Add an intern") {
+            createIntern(internQs);
+           
+        }
+        else if (selection.add === "Nothing. I'm done") {
+            fs.writeFile(outputPath,render(employees),function(err){
+                if(err){
+                  console.log("failed")
+                  return
+                }
+                else{
+                  console.log("Success!!")
+                }
+            })
+              
+        }
+    }
+
+    catch (err){
+        console.log(err)
+    }
+}
+
+function promptQuestions(qs){
+    return inquirer.prompt(qs)
+}
+
+
+function createEngineer(qs) {
+    inquirer.prompt(qs)
+        .then(function (res) {
+            employees.push(new Engineer(res.name, res.id, res.email, res.github))
+            managerPrompt()
+        });
+
+};
+
+function createManager(qs) {
+    inquirer.prompt(qs)
+        .then(function (res) {
+            employees.push(new Manager(res.name, res.id, res.email, res.office))
+            managerPrompt()
+        });
+};
+
+function createIntern(qs) {
+    inquirer.prompt(qs)
+        .then(function (res){
+            employees.push(new Intern(res.name, res.id, res.email, res.school));
+        managerPrompt()
+        });
+
+};
+
+function nextStep() {
+    return inquirer.prompt(
+        {
+            type: "list",
+            name: "add",
+            message: "What would you like to do?",
+            choices: ["Add an employee", "Add an intern", "Nothing. I'm done"]
 
         })
+}
 
-       
+
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
