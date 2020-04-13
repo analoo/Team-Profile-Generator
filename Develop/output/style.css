@@ -1,0 +1,48 @@
+body{
+    font-family: 'Raleway', sans-serif;
+}
+.jumbotron{
+    background-color: #3f72af;
+    color: white;
+    font-weight: 600;
+    display: swap;
+}
+
+.card-header{
+    background-color: #112d4e;
+    border-color: white;
+}
+
+.card-body{
+    height: 200px;
+}
+
+#manager{
+    float: none;
+    display: block;
+}
+
+.employee-card{
+    background-color: #f9f7f7;
+    border-color: white;
+    width: 250px;
+    display: block;
+    float: left;
+    margin: 10px;
+    box-shadow: 5px grey;
+}
+
+.name{
+    color: #f9f7f7;
+    font-size: 1.25rem;
+
+}
+.list-group-item{
+    font-size: .9rem;
+}
+
+.role{
+    color: #dbe2ef;
+    font-size: 1.00rem;
+}
+

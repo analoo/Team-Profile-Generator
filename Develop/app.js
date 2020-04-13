@@ -10,109 +10,26 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-// creates questions needed for each of the classes we want to create
-const engineerQs = [
-    {
-        type: "input",
-        name: "name",
-        message: "What is this employee's name?"
-
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "What is this employee's work ID?"
-
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is this employee's work email?"
-
-    },
-
-    {
-        type: "input",
-        name: "github",
-        message: "What is this employee's GitHub name?"
-
-    },
-
-];
-
-const internQs = [
-    {
-        type: "input",
-        name: "name",
-        message: "What is this intern's name?"
-
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "What is this intern's work ID?"
-
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is this intern's email?"
-
-    },
-
-    {
-        type: "input",
-        name: "school",
-        message: "What school does this intern go to?"
-
-    },
-
-];
-
-const managerQs = [
-    {
-        type: "input",
-        name: "name",
-        message: "What is your name?"
-
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "What is your work id?"
-
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is your email?"
-
-    },
-    {
-        type: "input",
-        name: "office",
-        message: "What is your office number?"
-
-    },
-
-]
-
 // will hold all of the employee type objects that were created
 const employees = []
-// Asks manager questions about themselves before diving into 
-createManager(managerQs)
+// Asks manager questions about themselves before diving into the rest of the questions
 
+createManager()
+
+
+// async function allows us to use await to get the response of what the manager wants to do next, before diving into the if, then statements
 async function managerPrompt() {
     try {
         var selection = await nextStep();
         if (selection.add === "Add an employee") {
-            createEngineer(engineerQs)
+            createEngineer()
 
         }
         else if (selection.add === "Add an intern") {
-            createIntern(internQs);
+            createIntern();
            
         }
+        // when the person selects that they are done, we will write to file
         else if (selection.add === "Nothing. I'm done") {
             fs.writeFile(outputPath,render(employees),function(err){
                 if(err){
@@ -132,13 +49,36 @@ async function managerPrompt() {
     }
 }
 
-function promptQuestions(qs){
-    return inquirer.prompt(qs)
-}
-
-
-function createEngineer(qs) {
-    inquirer.prompt(qs)
+// create engineer function that asks multiple questions that are used to create an Engineer object
+function createEngineer() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is this employee's name?"
+    
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is this employee's work ID?"
+    
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is this employee's work email?"
+    
+        },
+    
+        {
+            type: "input",
+            name: "github",
+            message: "What is this employee's GitHub name?"
+    
+        },
+    
+    ])
         .then(function (res) {
             employees.push(new Engineer(res.name, res.id, res.email, res.github))
             managerPrompt()
@@ -146,16 +86,71 @@ function createEngineer(qs) {
 
 };
 
-function createManager(qs) {
-    inquirer.prompt(qs)
+// create engineer function that asks multiple questions that are used to create a Manager object
+function createManager() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is your name?"
+    
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your work id?"
+    
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your email?"
+    
+        },
+        {
+            type: "input",
+            name: "office",
+            message: "What is your office number?"
+    
+        },
+    
+    ])
         .then(function (res) {
             employees.push(new Manager(res.name, res.id, res.email, res.office))
             managerPrompt()
         });
 };
 
-function createIntern(qs) {
-    inquirer.prompt(qs)
+// create engineer function that asks multiple questions that are used to create an intern object
+function createIntern() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is this intern's name?"
+    
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is this intern's work ID?"
+    
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is this intern's email?"
+    
+        },
+    
+        {
+            type: "input",
+            name: "school",
+            message: "What school does this intern go to?"
+    
+        },
+    
+    ])
         .then(function (res){
             employees.push(new Intern(res.name, res.id, res.email, res.school));
         managerPrompt()
@@ -163,6 +158,7 @@ function createIntern(qs) {
 
 };
 
+// primpts user for what they want to do next and returns the variable name and response as an object
 function nextStep() {
     return inquirer.prompt(
         {
